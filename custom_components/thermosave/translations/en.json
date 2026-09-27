@@ -1,0 +1,83 @@
+{
+  "config": {
+    "abort": {
+      "flow_state_missing": "The configuration flow lost its session. Start the setup again.",
+      "wrong_account": "The authentication code belongs to a different account."
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to server.",
+      "invalid_auth": "Authentication failed.",
+      "invalid_code": "The authentication code is invalid or has expired.",
+      "unknown": "Unexpected error. Check the Home Assistant logs."
+    },
+    "step": {
+      "code": {
+        "data": {
+          "code": "Authentication code"
+        },
+        "data_description": {
+          "code": "The one-time code from the email."
+        },
+        "description": "Enter the authentication code sent to {email}.",
+        "title": "Enter authentication code"
+      },
+      "reauth_confirm": {
+        "description": "The saved credentials for {email} are no longer valid. Submit to send a new authentication code.",
+        "title": "Reconnect Thermosave"
+      },
+      "user": {
+        "data": {
+          "email": "Email"
+        },
+        "data_description": {
+          "email": "The email address registered with Thermosave."
+        },
+        "description": "Enter the email address used by your Thermosave account. Thermosave will send a one-time login code.",
+        "title": "Connect to Thermosave"
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "online": {
+        "name": "Online"
+      }
+    },
+    "calendar": {
+      "schedule": {
+        "name": "Schedule"
+      }
+    },
+    "select": {
+      "mode": {
+        "name": "Mode",
+        "state": {
+          "auto": "Auto",
+          "off": "Away",
+          "on": "Heat now"
+        }
+      }
+    },
+    "sensor": {
+      "last_seen": {
+        "name": "Last seen"
+      },
+      "power": {
+        "name": "Power"
+      },
+      "state": {
+        "name": "State",
+        "state": {
+          "away": "Away",
+          "heating": "Heating",
+          "offline": "Offline",
+          "paused": "Paused",
+          "ready": "Ready"
+        }
+      },
+      "timezone": {
+        "name": "Timezone"
+      }
+    }
+  }
+}
