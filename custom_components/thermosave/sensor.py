@@ -1,4 +1,4 @@
-"""Sensor platform for Thermosave."""
+"""Sensor platform for ThermoSave."""
 
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ async def async_setup_entry(
     entry: ThermosaveConfigEntry,
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
-    """Set up Thermosave sensors."""
+    """Set up ThermoSave sensors."""
     coordinator = entry.runtime_data.coordinator
     known_macs: set[str] = set()
 

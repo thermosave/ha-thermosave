@@ -1,4 +1,4 @@
-"""Async client for Thermosave Cognito authentication and cloud API."""
+"""Async client for ThermoSave Cognito authentication and cloud API."""
 
 from __future__ import annotations
 
@@ -43,7 +43,7 @@ TokenUpdateCallback = Callable[[TokenSet], Awaitable[None] | None]
 
 @dataclass(frozen=True, slots=True)
 class ThermosaveEndpoints:
-    """Thermosave backend endpoint templates."""
+    """ThermoSave backend endpoint templates."""
 
     claim_device: str = "/v1/devices/claim"
     devices: str = "/v1/devices"
@@ -52,7 +52,7 @@ class ThermosaveEndpoints:
 
 
 class ThermosaveClient:
-    """Client for Thermosave authentication and device communication."""
+    """Client for ThermoSave authentication and device communication."""
 
     def __init__(  # noqa: PLR0913
         self,
@@ -368,7 +368,7 @@ class ThermosaveClient:
 
         devices = await self.list_devices()
         if not devices:
-            raise ThermosaveApiError("No Thermosave devices are claimed")
+            raise ThermosaveApiError("No ThermoSave devices are claimed")
         if len(devices) > 1:
             raise ThermosaveApiError(
                 "More than one device is claimed; supply a MAC address"
@@ -460,7 +460,7 @@ class ThermosaveClient:
                 return response.status, parsed
         except (TimeoutError, aiohttp.ClientError) as err:
             raise ThermosaveConnectionError(
-                f"Unable to communicate with Thermosave: {err}"
+                f"Unable to communicate with ThermoSave: {err}"
             ) from err
 
     async def _ensure_valid_access_token(self) -> None:
@@ -590,7 +590,7 @@ class ThermosaveClient:
 
         # Cognito access tokens are JWTs. Reading exp without signature
         # verification is safe here because it is used only to schedule refresh;
-        # the Thermosave backend still verifies the token itself.
+        # the ThermoSave backend still verifies the token itself.
         try:
             encoded_payload = access_token.split(".")[1]
             encoded_payload += "=" * (-len(encoded_payload) % 4)
@@ -740,7 +740,7 @@ class ThermosaveClient:
             value = payload.get(key)
             if isinstance(value, str) and value:
                 return value
-        return f"Thermosave request failed with HTTP {status}"
+        return f"ThermoSave request failed with HTTP {status}"
 
     @staticmethod
     def _raise_api_error(status: int, payload: Mapping[str, Any]) -> None:

@@ -1,4 +1,4 @@
-"""Shared Thermosave entity helpers."""
+"""Shared ThermoSave entity helpers."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class ThermosaveEntity(CoordinatorEntity[ThermosaveDataUpdateCoordinator]):
-    """Base entity for one Thermosave device."""
+    """Base entity for one ThermoSave device."""
 
     _attr_has_entity_name = True
 
@@ -31,8 +31,8 @@ class ThermosaveEntity(CoordinatorEntity[ThermosaveDataUpdateCoordinator]):
         self._attr_unique_id = f"{mac}_{key}"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, mac)},
-            name=f"Thermosave {mac}",
-            manufacturer="Thermosave",
+            name=f"ThermoSave {mac}",
+            manufacturer="ThermoSave",
         )
 
     @property

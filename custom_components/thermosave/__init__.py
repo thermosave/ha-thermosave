@@ -1,4 +1,4 @@
-"""The Thermosave integration."""
+"""The ThermoSave integration."""
 
 from __future__ import annotations
 
@@ -36,7 +36,7 @@ CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 @dataclass(slots=True)
 class ThermosaveRuntimeData:
-    """Runtime objects associated with a Thermosave config entry."""
+    """Runtime objects associated with a ThermoSave config entry."""
 
     client: ThermosaveClient
     coordinator: ThermosaveDataUpdateCoordinator
@@ -49,7 +49,7 @@ async def async_setup_entry(
     hass: HomeAssistant,
     entry: ThermosaveConfigEntry,
 ) -> bool:
-    """Set up Thermosave from a config entry."""
+    """Set up ThermoSave from a config entry."""
 
     async def async_store_tokens(tokens: TokenSet) -> None:
         """Persist refreshed Cognito tokens in the config entry."""
@@ -89,5 +89,5 @@ async def async_unload_entry(
     hass: HomeAssistant,
     entry: ThermosaveConfigEntry,
 ) -> bool:
-    """Unload a Thermosave config entry."""
+    """Unload a ThermoSave config entry."""
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)

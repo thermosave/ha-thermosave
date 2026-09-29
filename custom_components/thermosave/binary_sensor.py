@@ -1,4 +1,4 @@
-"""Binary sensor platform for Thermosave."""
+"""Binary sensor platform for ThermoSave."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ async def async_setup_entry(
     entry: ThermosaveConfigEntry,
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
-    """Set up Thermosave binary sensors."""
+    """Set up ThermoSave binary sensors."""
     coordinator = entry.runtime_data.coordinator
     known_macs: set[str] = set()
 
@@ -47,7 +47,7 @@ async def async_setup_entry(
 
 
 class ThermosaveOnlineBinarySensor(ThermosaveEntity, BinarySensorEntity):
-    """Represent the device to thermosave backend connection state."""
+    """Represent the device to ThermoSave backend connection state."""
 
     _attr_translation_key = "online"
     _attr_device_class = BinarySensorDeviceClass.CONNECTIVITY

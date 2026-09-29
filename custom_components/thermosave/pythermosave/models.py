@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class ThermosaveMode(StrEnum):
-    """Documented Thermosave operating modes."""
+    """Documented ThermoSave operating modes."""
 
     AUTO = "auto"
     ON = "on"
@@ -46,7 +46,7 @@ class ScheduleWindow:
 
 @dataclass(frozen=True, slots=True)
 class DeviceStatus:
-    """Status returned by the Thermosave backend."""
+    """Status returned by the ThermoSave backend."""
 
     mac: str
     connection_state: str | None
@@ -59,7 +59,7 @@ class DeviceStatus:
 
 @dataclass(frozen=True, slots=True)
 class DeviceConfig:
-    """Configuration returned by the Thermosave backend."""
+    """Configuration returned by the ThermoSave backend."""
 
     timezone: str | None
     windows: tuple[ScheduleWindow, ...]
@@ -69,7 +69,7 @@ class DeviceConfig:
 
 @dataclass(frozen=True, slots=True)
 class UnitInfo:
-    """Combined status and configuration for one Thermosave device."""
+    """Combined status and configuration for one ThermoSave device."""
 
     mac: str
     connection_state: str | None
@@ -93,7 +93,7 @@ class UnitInfo:
     @property
     def name(self) -> str:
         """Return a human-readable device name."""
-        return f"Thermosave {self.mac}"
+        return f"ThermoSave {self.mac}"
 
     @property
     def is_on(self) -> bool | None:

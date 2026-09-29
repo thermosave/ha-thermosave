@@ -1,4 +1,4 @@
-"""Config flow for Thermosave."""
+"""Config flow for ThermoSave."""
 
 from __future__ import annotations
 
@@ -39,7 +39,7 @@ CONF_CODE = "code"
 
 
 class ThermosaveConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Thermosave."""
+    """Handle a config flow for ThermoSave."""
 
     VERSION = 1
 

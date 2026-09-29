@@ -1,4 +1,4 @@
-"""Editable daily schedule calendar for Thermosave."""
+"""Editable daily schedule calendar for ThermoSave."""
 
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ async def async_setup_entry(
     entry: ThermosaveConfigEntry,
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
-    """Set up Thermosave schedule calendars."""
+    """Set up ThermoSave schedule calendars."""
     coordinator = entry.runtime_data.coordinator
     known_macs: set[str] = set()
 
@@ -117,7 +117,7 @@ class ThermosaveScheduleCalendar(ThermosaveEntity, CalendarEntity):
         index = self._window_index(uid)
         windows = list(self.info.windows)
         if index >= len(windows):
-            raise HomeAssistantError("The Thermosave schedule window no longer exists")
+            raise HomeAssistantError("The ThermoSave schedule window no longer exists")
         del windows[index]
         await self._async_save_windows(windows)
 
@@ -133,7 +133,7 @@ class ThermosaveScheduleCalendar(ThermosaveEntity, CalendarEntity):
         index = self._window_index(uid)
         windows = list(self.info.windows)
         if index >= len(windows):
-            raise HomeAssistantError("The Thermosave schedule window no longer exists")
+            raise HomeAssistantError("The ThermoSave schedule window no longer exists")
         windows[index] = self._window_from_event(event)
         await self._async_save_windows(windows)
 
@@ -142,7 +142,7 @@ class ThermosaveScheduleCalendar(ThermosaveEntity, CalendarEntity):
             await self.coordinator.client.set_schedule(self._mac, windows)
         except (ThermosaveError, ValueError) as err:
             raise HomeAssistantError(
-                f"Unable to update the Thermosave schedule for {self._mac}: {err}"
+                f"Unable to update the ThermoSave schedule for {self._mac}: {err}"
             ) from err
         await self.coordinator.async_request_refresh()
         self.async_update_event_listeners()
@@ -167,9 +167,9 @@ class ThermosaveScheduleCalendar(ThermosaveEntity, CalendarEntity):
                     CalendarEvent(
                         start=event_start,
                         end=event_end,
-                        summary="Thermosave power saving",
+                        summary="ThermoSave power saving",
                         description=(
-                            "Daily recurring Thermosave schedule window. "
+                            "Daily recurring ThermoSave schedule window. "
                             "Editing or deleting this occurrence changes the full "
                             "daily schedule window."
                         ),
@@ -208,14 +208,14 @@ class ThermosaveScheduleCalendar(ThermosaveEntity, CalendarEntity):
         end = event.get(EVENT_END)
         if not isinstance(start, datetime) or not isinstance(end, datetime):
             raise HomeAssistantError(
-                "Thermosave schedule entries must have start and end times, "
+                "ThermoSave schedule entries must have start and end times, "
                 "not all-day dates"
             )
         if start.tzinfo is None or end.tzinfo is None:
             raise HomeAssistantError("Schedule start and end must include a timezone")
         if end <= start or end - start > timedelta(days=1):
             raise HomeAssistantError(
-                "A Thermosave schedule window must be longer than zero and "
+                "A ThermoSave schedule window must be longer than zero and "
                 "at most 24 hours"
             )
 
@@ -234,10 +234,10 @@ class ThermosaveScheduleCalendar(ThermosaveEntity, CalendarEntity):
     def _window_index(self, uid: str) -> int:
         prefix = f"thermosave:{self._mac}:window:"
         if not uid.startswith(prefix):
-            raise HomeAssistantError("Invalid Thermosave schedule event identifier")
+            raise HomeAssistantError("Invalid ThermoSave schedule event identifier")
         try:
             return int(uid.removeprefix(prefix))
         except ValueError as err:
             raise HomeAssistantError(
-                "Invalid Thermosave schedule event identifier"
+                "Invalid ThermoSave schedule event identifier"
             ) from err

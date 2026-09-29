@@ -6,7 +6,7 @@ class ThermosaveError(Exception):
 
 
 class ThermosaveConnectionError(ThermosaveError):
-    """Raised when Cognito or the Thermosave API cannot be reached."""
+    """Raised when Cognito or the ThermoSave API cannot be reached."""
 
 
 class ThermosaveAuthenticationError(ThermosaveError):
@@ -22,7 +22,7 @@ class ThermosaveUnsupportedError(ThermosaveError):
 
 
 class ThermosaveApiError(ThermosaveError):
-    """Raised when Cognito or the Thermosave API rejects a request."""
+    """Raised when Cognito or the ThermoSave API rejects a request."""
 
     def __init__(
         self,

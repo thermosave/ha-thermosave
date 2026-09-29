@@ -1,4 +1,4 @@
-"""Async Python client for Thermosave."""
+"""Async Python client for ThermoSave."""
 
 from .client import (
     DEFAULT_API_BASE_URL,

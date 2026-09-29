@@ -1,4 +1,4 @@
-"""Select platform for Thermosave."""
+"""Select platform for ThermoSave."""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ async def async_setup_entry(
     entry: ThermosaveConfigEntry,
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
-    """Set up Thermosave mode selectors."""
+    """Set up ThermoSave mode selectors."""
     coordinator = entry.runtime_data.coordinator
     known_macs: set[str] = set()
 
@@ -81,6 +81,6 @@ class ThermosaveModeSelect(ThermosaveEntity, SelectEntity):
             await self.coordinator.client.set_mode(self._mac, option)
         except (ThermosaveError, ValueError) as err:
             raise HomeAssistantError(
-                f"Unable to set Thermosave mode for {self._mac}: {err}"
+                f"Unable to set ThermoSave mode for {self._mac}: {err}"
             ) from err
         await self.coordinator.async_request_refresh()

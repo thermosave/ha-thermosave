@@ -23,17 +23,17 @@
       },
       "reauth_confirm": {
         "description": "The saved credentials for {email} are no longer valid. Submit to send a new authentication code.",
-        "title": "Reconnect Thermosave"
+        "title": "Reconnect ThermoSave"
       },
       "user": {
         "data": {
           "email": "Email"
         },
         "data_description": {
-          "email": "The email address registered with Thermosave."
+          "email": "The email address registered with ThermoSave."
         },
-        "description": "Enter the email address used by your Thermosave account. Thermosave will send a one-time login code.",
-        "title": "Connect to Thermosave"
+        "description": "Enter the email address used by your ThermoSave account. ThermoSave will send a one-time login code.",
+        "title": "Connect to ThermoSave"
       }
     }
   },

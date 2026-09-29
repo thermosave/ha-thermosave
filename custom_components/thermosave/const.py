@@ -1,4 +1,4 @@
-"""Constants for the Thermosave integration."""
+"""Constants for the ThermoSave integration."""
 
 from datetime import timedelta
 

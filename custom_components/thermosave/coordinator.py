@@ -1,4 +1,4 @@
-"""Data update coordinator for Thermosave."""
+"""Data update coordinator for ThermoSave."""
 
 from __future__ import annotations
 
@@ -53,4 +53,4 @@ class ThermosaveDataUpdateCoordinator(DataUpdateCoordinator[ThermosaveCoordinato
         except ThermosaveAuthenticationError as err:
             raise ConfigEntryAuthFailed from err
         except ThermosaveError as err:
-            raise UpdateFailed(f"Error communicating with Thermosave: {err}") from err
+            raise UpdateFailed(f"Error communicating with ThermoSave: {err}") from err
