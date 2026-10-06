@@ -85,6 +85,30 @@ class UnitInfo:
     status_raw: Mapping[str, Any] | None = None
     config_raw: Mapping[str, Any] | None = None
 
+    @classmethod
+    def from_parts(
+        cls,
+        mac: str,
+        status: DeviceStatus | None,
+        config: DeviceConfig | None,
+    ) -> UnitInfo:
+        """Combine a device status and configuration into one record."""
+        return cls(
+            mac=mac,
+            connection_state=status.connection_state if status else None,
+            last_seen=status.last_seen if status else None,
+            power_kw=status.power_kw if status else None,
+            mode_status=status.mode if status else None,
+            mode_config=config.mode if config else None,
+            relay_state=status.relay_state if status else None,
+            timezone=config.timezone if config else None,
+            windows=config.windows if config else (),
+            status_available=status is not None,
+            config_available=config is not None,
+            status_raw=status.raw if status else None,
+            config_raw=config.raw if config else None,
+        )
+
     @property
     def unit_id(self) -> str:
         """Return the stable unit identifier used by older callers."""

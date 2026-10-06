@@ -139,11 +139,12 @@ class ThermosaveScheduleCalendar(ThermosaveEntity, CalendarEntity):
 
     async def _async_save_windows(self, windows: list[ScheduleWindow]) -> None:
         try:
-            await self.coordinator.client.set_schedule(self._mac, windows)
+            config = await self.coordinator.client.set_schedule(self._mac, windows)
         except (ThermosaveError, ValueError) as err:
             raise HomeAssistantError(
                 f"Unable to update the ThermoSave schedule for {self._mac}: {err}"
             ) from err
+        self.coordinator.async_update_config(self._mac, config)
         await self.coordinator.async_request_refresh()
         self.async_update_event_listeners()
 

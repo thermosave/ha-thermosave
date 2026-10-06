@@ -268,21 +268,7 @@ class ThermosaveClient:
             self.get_device_config(normalized_mac),
         )
 
-        return UnitInfo(
-            mac=normalized_mac,
-            connection_state=status.connection_state if status else None,
-            last_seen=status.last_seen if status else None,
-            power_kw=status.power_kw if status else None,
-            mode_status=status.mode if status else None,
-            mode_config=config.mode if config else None,
-            relay_state=status.relay_state if status else None,
-            timezone=config.timezone if config else None,
-            windows=config.windows if config else (),
-            status_available=status is not None,
-            config_available=config is not None,
-            status_raw=status.raw if status else None,
-            config_raw=config.raw if config else None,
-        )
+        return UnitInfo.from_parts(normalized_mac, status, config)
 
     async def update_device_config(
         self,

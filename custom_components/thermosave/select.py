@@ -78,9 +78,10 @@ class ThermosaveModeSelect(ThermosaveEntity, SelectEntity):
             option,
         )
         try:
-            await self.coordinator.client.set_mode(self._mac, option)
+            config = await self.coordinator.client.set_mode(self._mac, option)
         except (ThermosaveError, ValueError) as err:
             raise HomeAssistantError(
                 f"Unable to set ThermoSave mode for {self._mac}: {err}"
             ) from err
+        self.coordinator.async_update_config(self._mac, config)
         await self.coordinator.async_request_refresh()

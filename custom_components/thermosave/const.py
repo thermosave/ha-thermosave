@@ -13,4 +13,6 @@ CONF_ACCESS_TOKEN = "access_token"  # noqa: S105
 CONF_REFRESH_TOKEN = "refresh_token"  # noqa: S105
 CONF_EXPIRES_AT = "expires_at"
 
-UPDATE_INTERVAL = timedelta(seconds=30)
+STATUS_UPDATE_INTERVAL = timedelta(minutes=5)
+CONFIG_UPDATE_INTERVAL = timedelta(hours=1)
+DEVICES_UPDATE_INTERVAL = timedelta(hours=1)
