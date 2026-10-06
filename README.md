@@ -9,6 +9,10 @@ devices to Home Assistant through the ThermoSave cloud (`api.thermosave.com`).
 All devices claimed by your ThermoSave account are added automatically,
 including devices claimed after the integration was set up.
 
+> [!WARNING]
+> This integration is experimental and may change or break between releases.
+> It is not yet recommended for daily use.
+
 ## Entities
 
 Each ThermoSave device gets:
