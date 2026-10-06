@@ -34,6 +34,10 @@ because schedule windows repeat daily.
 
 ### HACS (recommended)
 
+Assumes that you have
+[downloaded HACS](https://hacs.xyz/docs/use/download/prerequisites/) to your
+Home Assistant installation.
+
 1. Open HACS, go to the three-dot menu, then **Custom repositories**.
 2. Add `https://github.com/thermosave/ha-thermosave` with the type **Integration**.
 3. Search for **ThermoSave**, download it, and restart Home Assistant.
