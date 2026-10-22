@@ -30,6 +30,8 @@ jobs:
 
   hacs: # https://github.com/hacs/action
     name: HACS validation
+    # HACS validation only works on public repositories
+    if: ${{ !github.event.repository.private }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
