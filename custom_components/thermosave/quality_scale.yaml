@@ -28,11 +28,7 @@ rules:
   unique-config-entry: done
 
   # Silver
-  action-exceptions:
-    status: todo
-    comment: |
-      Invalid calendar event input raises HomeAssistantError instead of
-      ServiceValidationError.
+  action-exceptions: done
   config-entry-unloading: done
   docs-configuration-parameters:
     status: exempt
