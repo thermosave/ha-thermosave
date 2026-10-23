@@ -13,7 +13,7 @@ from homeassistant.components.calendar.const import (
     CalendarEntityFeature,
 )
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.exceptions import HomeAssistantError
+from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.util import dt as dt_util
 
@@ -208,14 +208,16 @@ class ThermosaveScheduleCalendar(ThermosaveEntity, CalendarEntity):
         start = event.get(EVENT_START)
         end = event.get(EVENT_END)
         if not isinstance(start, datetime) or not isinstance(end, datetime):
-            raise HomeAssistantError(
+            raise ServiceValidationError(
                 "ThermoSave schedule entries must have start and end times, "
                 "not all-day dates"
             )
         if start.tzinfo is None or end.tzinfo is None:
-            raise HomeAssistantError("Schedule start and end must include a timezone")
+            raise ServiceValidationError(
+                "Schedule start and end must include a timezone"
+            )
         if end <= start or end - start > timedelta(days=1):
-            raise HomeAssistantError(
+            raise ServiceValidationError(
                 "A ThermoSave schedule window must be longer than zero and "
                 "at most 24 hours"
             )
@@ -226,7 +228,7 @@ class ThermosaveScheduleCalendar(ThermosaveEntity, CalendarEntity):
         start_value = local_start.strftime("%H:%M")
         end_value = local_end.strftime("%H:%M")
         if start_value == end_value:
-            raise HomeAssistantError("Cannot have a zero time window.")
+            raise ServiceValidationError("Cannot have a zero time window.")
         return ScheduleWindow(start=start_value, end=end_value)
 
     def _window_uid(self, index: int) -> str:
