@@ -81,7 +81,10 @@ People *love* thorough bug reports. I'm not even kidding.
 
 ## Data updates
 
-The integration polls the ThermoSave cloud every 30 seconds.
+The integration polls the ThermoSave cloud for device status every 5 minutes.
+The device list and device configuration (mode, schedule and timezone) change
+rarely and are refreshed every hour. Changes made from Home Assistant show up
+right away.
 
 ## Cloud API client
 
