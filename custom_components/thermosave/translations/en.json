@@ -50,16 +50,6 @@
         "name": "Schedule"
       }
     },
-    "select": {
-      "mode": {
-        "name": "Mode",
-        "state": {
-          "auto": "Auto",
-          "off": "Away",
-          "on": "Heat now"
-        }
-      }
-    },
     "sensor": {
       "last_seen": {
         "name": "Last seen"
@@ -79,6 +69,15 @@
       },
       "timezone": {
         "name": "Timezone"
+      }
+    },
+    "water_heater": {
+      "water_heater": {
+        "state": {
+          "eco": "Auto",
+          "off": "Away",
+          "performance": "Heat now"
+        }
       }
     }
   }

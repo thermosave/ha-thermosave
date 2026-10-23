@@ -28,8 +28,8 @@ if TYPE_CHECKING:
 PLATFORMS: list[Platform] = [
     Platform.BINARY_SENSOR,
     Platform.CALENDAR,
-    Platform.SELECT,
     Platform.SENSOR,
+    Platform.WATER_HEATER,
 ]
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 

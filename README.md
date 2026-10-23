@@ -19,7 +19,7 @@ Each ThermoSave device gets:
 
 | Platform      | Entity    | Description                                                           |
 | ------------- | --------- | --------------------------------------------------------------------- |
-| Select        | Mode      | Auto (follow the schedule), Heat now (forced on) or Away (forced off) |
+| Water heater  | (device)  | Auto (follow the schedule), Heat now (forced on) or Away (forced off) |
 | Sensor        | State     | Heating, Ready (tank full), Paused (schedule), Away (mode off), Offline |
 | Sensor        | Power     | Current power draw (kW)                                               |
 | Sensor        | Last seen | When the device last reported to the cloud                            |
