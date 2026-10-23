@@ -9,6 +9,7 @@ from homeassistant.components.binary_sensor import (
     BinarySensorEntity,
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.entity import EntityCategory
 
 from .entity import ThermosaveEntity
 
@@ -50,6 +51,7 @@ class ThermosaveOnlineBinarySensor(ThermosaveEntity, BinarySensorEntity):
     """Represent the device to ThermoSave backend connection state."""
 
     _attr_translation_key = "online"
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
     _attr_device_class = BinarySensorDeviceClass.CONNECTIVITY
 
     def __init__(self, coordinator: ThermosaveDataUpdateCoordinator, mac: str) -> None:

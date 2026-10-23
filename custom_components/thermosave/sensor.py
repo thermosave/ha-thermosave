@@ -11,6 +11,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.const import UnitOfPower
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.entity import EntityCategory
 
 from .entity import ThermosaveEntity
 from .pythermosave import ThermosaveMode
@@ -126,6 +127,7 @@ class ThermosaveLastSeenSensor(ThermosaveEntity, SensorEntity):
     """Represent when the device was last seen."""
 
     _attr_translation_key = "last_seen"
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
     _attr_device_class = SensorDeviceClass.TIMESTAMP
 
     def __init__(self, coordinator: ThermosaveDataUpdateCoordinator, mac: str) -> None:
@@ -151,6 +153,7 @@ class ThermosaveTimezoneSensor(ThermosaveEntity, SensorEntity):
     """Represent the configured device timezone."""
 
     _attr_translation_key = "timezone"
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, coordinator: ThermosaveDataUpdateCoordinator, mac: str) -> None:
         """Initialize the entity."""
