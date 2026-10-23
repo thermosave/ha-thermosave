@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING
 import pytest
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
 from homeassistant.const import STATE_UNAVAILABLE
+from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers.entity import EntityCategory
 
 from .conftest import get_entity_id, make_status, setup_integration
 
@@ -30,6 +32,25 @@ async def test_sensors(hass: HomeAssistant) -> None:
     assert _state(hass, "power") == "2.5"
     assert _state(hass, "last_seen") == "2026-10-23T12:00:00+00:00"
     assert _state(hass, "timezone") == "UTC"
+
+
+@pytest.mark.usefixtures("init_integration")
+@pytest.mark.parametrize(
+    ("key", "expected"),
+    [
+        ("state", None),
+        ("power", None),
+        ("last_seen", EntityCategory.DIAGNOSTIC),
+        ("timezone", EntityCategory.DIAGNOSTIC),
+    ],
+)
+async def test_entity_category(
+    hass: HomeAssistant, key: str, expected: EntityCategory | None
+) -> None:
+    """Test which sensors are diagnostic."""
+    entry = er.async_get(hass).async_get(get_entity_id(hass, SENSOR_DOMAIN, key))
+    assert entry is not None
+    assert entry.entity_category == expected
 
 
 @pytest.mark.parametrize(

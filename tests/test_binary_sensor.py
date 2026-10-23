@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING
 import pytest
 from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAIN
 from homeassistant.const import STATE_OFF, STATE_ON, STATE_UNAVAILABLE
+from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers.entity import EntityCategory
 
 from .conftest import get_entity_id, make_status, setup_integration
 
@@ -39,3 +41,13 @@ async def test_online(
     state = hass.states.get(get_entity_id(hass, BINARY_SENSOR_DOMAIN, "online"))
     assert state is not None
     assert state.state == expected
+
+
+@pytest.mark.usefixtures("init_integration")
+async def test_online_entity_category(hass: HomeAssistant) -> None:
+    """Test the online sensor is diagnostic."""
+    entry = er.async_get(hass).async_get(
+        get_entity_id(hass, BINARY_SENSOR_DOMAIN, "online")
+    )
+    assert entry is not None
+    assert entry.entity_category == EntityCategory.DIAGNOSTIC

@@ -58,9 +58,7 @@ rules:
   docs-troubleshooting: todo
   docs-use-cases: todo
   dynamic-devices: done
-  entity-category:
-    status: todo
-    comment: Last seen, Timezone and Online could be diagnostic entities.
+  entity-category: done
   entity-device-class: done
   entity-disabled-by-default:
     status: todo
