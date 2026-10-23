@@ -23,6 +23,7 @@ ignore = [
 
 [lint.per-file-ignores]
 "tests/**" = [
+    "PLR0913", # pytest fixtures are passed as arguments
     "S101", # pytest relies on assert
 ]
 
