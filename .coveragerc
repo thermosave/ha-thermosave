@@ -1,0 +1,9 @@
+[run]
+source = custom_components/thermosave
+omit =
+    # Vendored API client, measured as an external library.
+    custom_components/thermosave/pythermosave/*
+
+[report]
+show_missing = True
+fail_under = 95
