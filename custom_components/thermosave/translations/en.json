@@ -1,7 +1,9 @@
 {
   "config": {
     "abort": {
+      "already_configured": "This account is already configured.",
       "flow_state_missing": "The configuration flow lost its session. Start the setup again.",
+      "reauth_successful": "Re-authentication was successful.",
       "wrong_account": "The authentication code belongs to a different account."
     },
     "error": {
