@@ -1,3 +1,5 @@
 -r requirements_lint.txt
 colorlog==6.10.1
 homeassistant==2026.6.4
+# Pins the matching homeassistant version; bump both together.
+pytest-homeassistant-custom-component==0.13.340
