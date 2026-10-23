@@ -21,6 +21,11 @@ ignore = [
     "TRY003", # Long exception messages (ignored by Home Assistant core)
 ]
 
+[lint.per-file-ignores]
+"tests/**" = [
+    "S101", # pytest relies on assert
+]
+
 [lint.flake8-pytest-style]
 fixture-parentheses = false
 
