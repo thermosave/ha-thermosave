@@ -5,7 +5,7 @@ from datetime import timedelta
 DOMAIN = "thermosave"
 
 # Cognito app client IDs are public identifiers, not client secrets.
-COGNITO_CLIENT_ID = "734cc326bf3e5oicp51lnkdqf8"
+COGNITO_CLIENT_ID = "1ce8jd3ujc5alanbtqds8d6hpn"
 COGNITO_BASE_URL = "https://cognito-idp.us-west-1.amazonaws.com"
 API_BASE_URL = "https://api.thermosave.com"
 
