@@ -17,6 +17,8 @@ from custom_components.thermosave.const import (
     DOMAIN,
 )
 from custom_components.thermosave.pythermosave import (
+    ThermosaveAccountNotConfirmedError,
+    ThermosaveAccountNotFoundError,
     ThermosaveAuthenticationError,
     ThermosaveConnectionError,
     ThermosaveError,
@@ -69,6 +71,8 @@ async def test_user_flow(hass: HomeAssistant, mock_flow_client: AsyncMock) -> No
 @pytest.mark.parametrize(
     ("side_effect", "error"),
     [
+        (ThermosaveAccountNotFoundError, "account_not_found"),
+        (ThermosaveAccountNotConfirmedError, "account_not_confirmed"),
         (ThermosaveConnectionError, "cannot_connect"),
         (ThermosaveAuthenticationError, "invalid_auth"),
         (ThermosaveError, "unknown"),
@@ -189,6 +193,8 @@ async def test_reauth_flow(
 @pytest.mark.parametrize(
     ("side_effect", "error"),
     [
+        (ThermosaveAccountNotFoundError, "account_not_found"),
+        (ThermosaveAccountNotConfirmedError, "account_not_confirmed"),
         (ThermosaveConnectionError, "cannot_connect"),
         (ThermosaveAuthenticationError, "invalid_auth"),
         (ThermosaveError, "unknown"),

@@ -7,6 +7,8 @@
       "wrong_account": "The authentication code belongs to a different account."
     },
     "error": {
+      "account_not_confirmed": "This ThermoSave account has not been confirmed. Finish signing up in the ThermoSave mobile application first.",
+      "account_not_found": "No ThermoSave account exists for this email address. Create an account in the ThermoSave mobile application first.",
       "cannot_connect": "Failed to connect to server.",
       "invalid_auth": "Authentication failed.",
       "invalid_code": "The authentication code is invalid or has expired.",
@@ -34,7 +36,7 @@
         "data_description": {
           "email": "The email address registered with ThermoSave."
         },
-        "description": "Enter the email address used by your ThermoSave account. ThermoSave will send a one-time login code.",
+        "description": "Enter the email address of your existing ThermoSave account. ThermoSave will send a one-time login code. If you don't have an account yet, create one in the ThermoSave mobile application first.",
         "title": "Connect to ThermoSave"
       }
     }

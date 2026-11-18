@@ -50,7 +50,8 @@ Home Assistant configuration directory and restart Home Assistant.
 ## Configuration
 
 1. Go to **Settings → Devices & services → Add integration** and pick **ThermoSave**.
-2. Enter the email address of your ThermoSave account.
+2. Enter the email address of your existing ThermoSave account. Account is
+   created when you login to the ThermoSave mobile application.
 3. Enter the one-time code that ThermoSave emails to you.
 
 If the stored login stops working, Home Assistant asks you to reauthenticate,

@@ -24,6 +24,8 @@ from custom_components.thermosave.pythermosave import (
     AuthSession,
     DeviceConfig,
     ScheduleWindow,
+    ThermosaveAccountNotConfirmedError,
+    ThermosaveAccountNotFoundError,
     ThermosaveApiError,
     ThermosaveAuthenticationError,
     ThermosaveClient,
@@ -202,7 +204,7 @@ async def test_tokens(session: aiohttp.ClientSession) -> None:
 
 
 async def test_login(backend: MockBackend, session: aiohttp.ClientSession) -> None:
-    """Test signing up, requesting a code and answering the challenge."""
+    """Test requesting a code and answering the challenge."""
     store_tokens = AsyncMock()
     client = ThermosaveClient(
         session,
@@ -210,7 +212,6 @@ async def test_login(backend: MockBackend, session: aiohttp.ClientSession) -> No
         cognito_base_url=COGNITO_URL,
         token_update_callback=store_tokens,
     )
-    backend.cognito("SignUp")
     backend.cognito(
         "InitiateAuth", json={"Session": "session", "ChallengeName": "EMAIL_OTP"}
     )
@@ -235,13 +236,7 @@ async def test_login(backend: MockBackend, session: aiohttp.ClientSession) -> No
     assert client.pending_auth is None
     store_tokens.assert_awaited_once_with(tokens)
 
-    assert backend.cognito_payloads("SignUp") == [
-        {
-            "ClientId": "client-id",
-            "Username": EMAIL,
-            "UserAttributes": [{"Name": "email", "Value": EMAIL}],
-        }
-    ]
+    assert backend.cognito_payloads("SignUp") == []
     assert backend.cognito_payloads("InitiateAuth") == [
         {
             "AuthFlow": "USER_AUTH",
@@ -260,56 +255,68 @@ async def test_login(backend: MockBackend, session: aiohttp.ClientSession) -> No
 
 
 @pytest.mark.parametrize(
-    "error",
+    ("error", "exception"),
     [
-        {"__type": "com.amazonaws.cognito#UsernameExistsException"},
-        {"code": "UsernameExistsException"},
+        (
+            {"__type": "UserNotFoundException", "message": "User does not exist."},
+            ThermosaveAccountNotFoundError,
+        ),
+        (
+            {"__type": "UserNotConfirmedException", "message": "Not confirmed."},
+            ThermosaveAccountNotConfirmedError,
+        ),
     ],
 )
-async def test_request_code_existing_user(
-    backend: MockBackend, client: ThermosaveClient, error: dict[str, str]
+async def test_request_code_account_errors(
+    backend: MockBackend,
+    client: ThermosaveClient,
+    error: dict[str, str],
+    exception: type[Exception],
 ) -> None:
-    """Test an already registered email still gets a code."""
-    backend.cognito("SignUp", status=HTTPStatus.BAD_REQUEST, json=error)
-    backend.cognito("InitiateAuth", json={"Session": "session"})
+    """Test missing and unconfirmed accounts are reported without signing up."""
+    backend.cognito("InitiateAuth", status=HTTPStatus.BAD_REQUEST, json=error)
 
-    assert await client.request_auth_code(EMAIL) == AuthSession(EMAIL, "session")
+    with pytest.raises(exception, match=EMAIL):
+        await client.request_auth_code(EMAIL)
+    assert client.pending_auth is None
+    assert backend.cognito_payloads("SignUp") == []
 
 
 @pytest.mark.parametrize(
-    ("error", "code"),
+    ("error", "code", "message"),
     [
-        ({"__type": "InvalidParameterException", "message": "bad"}, "bad"),
-        ({"__type": 5}, "ThermoSave request failed with HTTP 400"),
+        (
+            {"__type": "InvalidParameterException", "message": "bad"},
+            "InvalidParameterException",
+            "bad",
+        ),
+        (
+            {"__type": "com.amazonaws.cognito#LimitExceededException"},
+            "LimitExceededException",
+            "ThermoSave request failed with HTTP 400",
+        ),
+        (
+            {"code": "LimitExceededException"},
+            "LimitExceededException",
+            "ThermoSave request failed with HTTP 400",
+        ),
+        ({"__type": 5}, None, "ThermoSave request failed with HTTP 400"),
     ],
 )
-async def test_request_code_sign_up_error(
+async def test_request_code_api_error_code(
     backend: MockBackend,
     client: ThermosaveClient,
     error: dict[str, Any],
-    code: str,
+    code: str | None,
+    message: str,
 ) -> None:
-    """Test other sign up errors are raised."""
-    backend.cognito("SignUp", status=HTTPStatus.BAD_REQUEST, json=error)
+    """Test InitiateAuth API errors are raised with the AWS error code."""
+    backend.cognito("InitiateAuth", status=HTTPStatus.BAD_REQUEST, json=error)
 
-    with pytest.raises(ThermosaveApiError, match=code) as err:
+    with pytest.raises(ThermosaveApiError, match=message) as err:
         await client.request_auth_code(EMAIL)
     assert err.value.status == HTTPStatus.BAD_REQUEST
-
-
-async def test_request_code_api_error_code(
-    backend: MockBackend, client: ThermosaveClient
-) -> None:
-    """Test the AWS error code is stored on the raised error."""
-    backend.cognito(
-        "SignUp",
-        status=HTTPStatus.BAD_REQUEST,
-        json={"__type": "InvalidParameterException"},
-    )
-
-    with pytest.raises(ThermosaveApiError) as err:
-        await client.request_auth_code(EMAIL)
-    assert err.value.code == "InvalidParameterException"
+    assert err.value.code == code
 
 
 @pytest.mark.parametrize(
@@ -336,7 +343,6 @@ async def test_request_code_initiate_error(
     message: str,
 ) -> None:
     """Test unusable InitiateAuth responses are authentication errors."""
-    backend.cognito("SignUp")
     backend.cognito("InitiateAuth", status=status, json=response)
 
     with pytest.raises(ThermosaveAuthenticationError, match=message):

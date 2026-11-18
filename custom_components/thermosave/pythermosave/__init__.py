@@ -7,6 +7,8 @@ from .client import (
     ThermosaveEndpoints,
 )
 from .exceptions import (
+    ThermosaveAccountNotConfirmedError,
+    ThermosaveAccountNotFoundError,
     ThermosaveApiError,
     ThermosaveAuthenticationError,
     ThermosaveConnectionError,
@@ -31,6 +33,8 @@ __all__ = [
     "DeviceConfig",
     "DeviceStatus",
     "ScheduleWindow",
+    "ThermosaveAccountNotConfirmedError",
+    "ThermosaveAccountNotFoundError",
     "ThermosaveApiError",
     "ThermosaveAuthenticationError",
     "ThermosaveClient",

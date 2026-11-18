@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING, Any
 
 import voluptuous as vol
@@ -25,6 +26,8 @@ from .const import (
     DOMAIN,
 )
 from .pythermosave import (
+    ThermosaveAccountNotConfirmedError,
+    ThermosaveAccountNotFoundError,
     ThermosaveAuthenticationError,
     ThermosaveClient,
     ThermosaveConnectionError,
@@ -36,6 +39,8 @@ if TYPE_CHECKING:
     from collections.abc import Mapping
 
 CONF_CODE = "code"
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class ThermosaveConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -62,11 +67,16 @@ class ThermosaveConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self._client = self._new_client()
             try:
                 await self._client.request_auth_code(self._email)
+            except ThermosaveAccountNotFoundError:
+                errors["base"] = "account_not_found"
+            except ThermosaveAccountNotConfirmedError:
+                errors["base"] = "account_not_confirmed"
             except ThermosaveConnectionError:
                 errors["base"] = "cannot_connect"
             except ThermosaveAuthenticationError:
                 errors["base"] = "invalid_auth"
             except (ThermosaveError, ValueError):
+                _LOGGER.exception("Unexpected error requesting authentication code")
                 errors["base"] = "unknown"
             else:
                 return await self.async_step_code()
@@ -106,6 +116,7 @@ class ThermosaveConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             except ThermosaveAuthenticationError:
                 errors["base"] = "invalid_auth"
             except ThermosaveError:
+                _LOGGER.exception("Unexpected error verifying authentication code")
                 errors["base"] = "unknown"
             else:
                 entry_data = {
@@ -163,11 +174,16 @@ class ThermosaveConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self._client = self._new_client()
             try:
                 await self._client.request_auth_code(self._email)
+            except ThermosaveAccountNotFoundError:
+                errors["base"] = "account_not_found"
+            except ThermosaveAccountNotConfirmedError:
+                errors["base"] = "account_not_confirmed"
             except ThermosaveConnectionError:
                 errors["base"] = "cannot_connect"
             except ThermosaveAuthenticationError:
                 errors["base"] = "invalid_auth"
             except ThermosaveError:
+                _LOGGER.exception("Unexpected error requesting authentication code")
                 errors["base"] = "unknown"
             else:
                 return await self.async_step_code()
