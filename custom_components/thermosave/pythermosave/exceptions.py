@@ -13,6 +13,14 @@ class ThermosaveAuthenticationError(ThermosaveError):
     """Raised when authentication or token refresh fails."""
 
 
+class ThermosaveAccountNotFoundError(ThermosaveAuthenticationError):
+    """Raised when no ThermoSave account exists for an email address."""
+
+
+class ThermosaveAccountNotConfirmedError(ThermosaveAuthenticationError):
+    """Raised when a ThermoSave account exists but has not been confirmed."""
+
+
 class ThermosaveInvalidCodeError(ThermosaveAuthenticationError):
     """Raised when an email authentication code is invalid or expired."""
 

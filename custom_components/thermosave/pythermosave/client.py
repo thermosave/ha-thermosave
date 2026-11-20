@@ -18,6 +18,8 @@ from urllib.parse import quote
 import aiohttp
 
 from .exceptions import (
+    ThermosaveAccountNotConfirmedError,
+    ThermosaveAccountNotFoundError,
     ThermosaveApiError,
     ThermosaveAuthenticationError,
     ThermosaveConnectionError,
@@ -102,33 +104,31 @@ class ThermosaveClient:
         return self._pending_auth
 
     async def request_auth_code(self, email: str) -> AuthSession:
-        """Sign up if needed, then request a passwordless email OTP."""
+        """Request a passwordless email OTP for an existing account."""
         normalized_email = self._normalize_email(email)
 
         try:
-            await self._cognito_request(
-                "SignUp",
+            payload = await self._cognito_request(
+                "InitiateAuth",
                 {
+                    "AuthFlow": "USER_AUTH",
                     "ClientId": self._cognito_client_id,
-                    "Username": normalized_email,
-                    "UserAttributes": [{"Name": "email", "Value": normalized_email}],
+                    "AuthParameters": {
+                        "USERNAME": normalized_email,
+                        "PREFERRED_CHALLENGE": "EMAIL_OTP",
+                    },
                 },
             )
         except ThermosaveApiError as err:
-            if err.code != "UsernameExistsException":
-                raise
-
-        payload = await self._cognito_request(
-            "InitiateAuth",
-            {
-                "AuthFlow": "USER_AUTH",
-                "ClientId": self._cognito_client_id,
-                "AuthParameters": {
-                    "USERNAME": normalized_email,
-                    "PREFERRED_CHALLENGE": "EMAIL_OTP",
-                },
-            },
-        )
+            if err.code == "UserNotFoundException":
+                raise ThermosaveAccountNotFoundError(
+                    f"No ThermoSave account exists for {normalized_email}"
+                ) from err
+            if err.code == "UserNotConfirmedException":
+                raise ThermosaveAccountNotConfirmedError(
+                    f"The ThermoSave account for {normalized_email} is not confirmed"
+                ) from err
+            raise
 
         session = payload.get("Session")
         if not isinstance(session, str) or not session:
